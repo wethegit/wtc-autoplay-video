@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <title>Test</title>
+    <link
+      rel="stylesheet"
+      media="screen"
+      href="dist/wtc-autoplay-video.css"
+    />
+    <style>
+      header {
+        position: relative;
+        height: 600px;
+      }
+
+      main .autoplay-video {
+        max-width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="autoplay-video autoplay-video--fullscreen">
+        <video
+          class="autoplay-video__video"
+          autoplay
+          playsinline
+          muted
+          loop
+        >
+          <!--
+            FREE LICENSE VIDEO FROM PEXELS
+            https://videos.pexels.com/videos/aerial-shot-of-cars-857591
+          -->
+          <source
+            src="Pexels-Videos-4799.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <img
+          class="autoplay-video__fallback"
+          src="Pexels-Videos-4799-fallback.png"
+          alt="Fallback"
+        />
+        <img
+          class="autoplay-video__preloader"
+          src="Pexels-Videos-4799-preloader.jpg"
+          alt="Preloader"
+        />
+      </div>
+    </header>
+    <main>
+      <h4>Fallback</h4>
+      <div class="autoplay-video">
+        <video
+          class="autoplay-video__video"
+          autoplay
+          playsinline
+          muted
+          loop
+        >
+          <!-- ILLUSTRATE FALLBACK -->
+          <source
+            src="404.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <img
+          class="autoplay-video__fallback"
+          src="Pexels-Videos-4799-fallback.png"
+          alt="Fallback"
+        />
+        <img
+          class="autoplay-video__preloader"
+          src="Pexels-Videos-4799-preloader.jpg"
+          alt="Preloader"
+        />
+      </div>
+      
+      <h4>Preloader</h4>
+      <div class="autoplay-video video-preloader">
+        <video
+          class="autoplay-video__video"
+          autoplay
+          playsinline
+          muted
+          loop
+        >
+          <!--
+            FREE LICENSE VIDEO FROM PEXELS
+            https://videos.pexels.com/videos/aerial-shot-of-cars-857591
+          -->
+          <source
+            src="Pexels-Videos-4799.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <img
+          class="autoplay-video__fallback"
+          src="Pexels-Videos-4799-fallback.png"
+          alt="Fallback"
+        />
+        <img
+          class="autoplay-video__preloader"
+          src="Pexels-Videos-4799-preloader.jpg"
+          alt="Preloader"
+        />
+      </div>
+    </main>
+
+    <script src="dist/wtc-autoplay-video.es5.js"></script>
+    <script>
+      (function() {
+        var videos = document.querySelectorAll('.autoplay-video');
+        for (var i = 0; i < videos.length; i++) {
+          var video = videos[i];
+
+          if (video.classList.contains('video-preloader')) {
+            setTimeout(function() {
+              new WTCAutoplayVideo.default(video);
+            }, 5000)
+          }
+          else {
+            new WTCAutoplayVideo.default(video);
+          }
+        }
+      })()
+    </script>
+  </body>
+</html>

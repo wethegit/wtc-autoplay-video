@@ -1,0 +1,40 @@
+{
+  "name": "wtc-autoplay-video",
+  "version": "0.0.1",
+  "description": "Autoplaying video class",
+  "main": "dist/wtc-autoplay-video.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild-js": "npx babel src/ --presets env --out-dir build",
+    "prebuild-css": "node-sass --output-style compressed src/wtc-autoplay-video.scss build/wtc-autoplay-video.css",
+    "minify-js": "npx uglifyjs build/wtc-autoplay-video.js --compress --output dist/wtc-autoplay-video.min.js",
+    "minify-css": "npx postcss build/wtc-autoplay-video.css --no-map --use autoprefixer -d dist/",
+    "build": "npm run prebuild-js && npm rum prebuild-css",
+    "prepare": "npm run build && npx webpack --config webpack.config.js && npm run minify-js && npm run minify-css"
+  },
+  "dependencies": {
+    "wtc-controller-element": "^1.0.13",
+    "wtc-controller-viewports": "^1.0.23"
+  },
+  "devDependencies": {
+    "autoprefixer": "^8.5.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "node-sass": "^4.9.0",
+    "postcss-cli": "^5.0.0",
+    "uglify-js": "^3.3.28",
+    "webpack": "^3.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wethegit/wtc-autoplay-video.git"
+  },
+  "keywords": [
+    "wtc"
+  ],
+  "homepage": "https://github.com/wethegit/wtc-autoplay-video#readme",
+  "author": "Marlon Marcello <marlon@wethecollective.com> (http://wethecollective.com)",
+  "license": "MIT"
+}
