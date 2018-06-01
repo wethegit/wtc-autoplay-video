@@ -1,8 +1,8 @@
 {
   "name": "wtc-autoplay-video",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Autoplaying video class",
-  "main": "dist/wtc-autoplay-video.js",
+  "main": "dist/wtc-autoplay-video.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild-js": "npx babel src/ --presets env --out-dir build",
