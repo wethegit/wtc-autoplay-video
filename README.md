@@ -57,7 +57,8 @@ ExecuteControllers.instanciate(document.getElementById('autoplay-video'), Autopl
 With the default js version, you have the option to pass the options as an object, or use data-attributes, they both work.
 ```javascript
 let gallery = new AutoplayVideo(document.getElementById('autoplay-video'), {
-  fullWidth: false
+  fullWidth: false,
+  vpOn: 30
 });
 ```
 
@@ -72,12 +73,14 @@ And for last, instanciate the videos:
 <script>
   var videos = document.querySelectorAll('.autoplay-video');
   for (var i = 0; i < videos.length; i++) {
-    new WTCAutoplayVideo.default(videos[i]);
+    new WTCAutoplayVideo.default(videos[i], { fullWidth: false, vpOn: 0 });
   }
 </script>
 ```
 
 ## Options
   - fullWidth: this will add a resize event handler to deal with the video aspect ratio.
+  - vpOn: this will play the video when on a certain position inside the viewport. 0 = autoplay
+    Remember to remove **autoplay** from the `<video>` tag
 
 [wtc-controller-element]:https://github.com/wethegit/wtc-controller-element
