@@ -320,17 +320,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var AutoplayVideo = function (_Viewport) {
   _inherits(AutoplayVideo, _Viewport);
 
-  function AutoplayVideo(element) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { fullWidth: false };
-
+  function AutoplayVideo(element, options) {
     _classCallCheck(this, AutoplayVideo);
 
     var _this = _possibleConstructorReturn(this, (AutoplayVideo.__proto__ || Object.getPrototypeOf(AutoplayVideo)).call(this, element));
 
+    var defaults = { fullWidth: false, vpOn: 0 };
+    options = Object.assign({}, defaults, options);
+
+    _this.hasStarted = false;
     _this.initiated = false;
     _this.options = {
-      fullWidth: _this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth
+      fullWidth: _this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth,
+      vpOn: _this.element.hasAttribute('data-vp-on') ? parseInt(_this.element.getAttribute('data-vp-on')) : options.vpOn
     };
+
+    if (_this.options.fullWidth && !_this.element.classList.contains('autoplay-video--fullscreen')) {
+      _this.element.classList.add('autoplay-video--fullscreen');
+    }
 
     _this._video = _this.element.querySelector('.autoplay-video__video');
     _this._fallback = _this.element.querySelector('.autoplay-video__fallback');
@@ -372,7 +379,9 @@ var AutoplayVideo = function (_Viewport) {
           window.addEventListener('resize', resizeDebounce);
         }
 
-        this.playVideo();
+        if (this._video.hasAttribute('autoplay')) {
+          this.playVideo();
+        }
       }
     }
   }, {
@@ -399,6 +408,7 @@ var AutoplayVideo = function (_Viewport) {
     key: 'onPlay',
     value: function onPlay() {
       this.element.classList.add('is-playing');
+      this.hasStarted = true;
     }
   }, {
     key: 'onFrozen',
@@ -409,6 +419,7 @@ var AutoplayVideo = function (_Viewport) {
     key: 'onPause',
     value: function onPause() {
       this.element.classList.add('is-paused');
+      this.hasStarted = false;
     }
   }, {
     key: 'pauseVideo',
@@ -439,6 +450,13 @@ var AutoplayVideo = function (_Viewport) {
         }
       } else {
         setTimeout(this.playVideo.bind(this), 500);
+      }
+    }
+  }, {
+    key: 'runAnimation',
+    value: function runAnimation(topPercent) {
+      if (topPercent > this.options.vpOn && this.initiated) {
+        if (!this.hasStarted) this.playVideo();
       }
     }
   }, {

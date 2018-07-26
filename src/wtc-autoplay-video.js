@@ -2,12 +2,21 @@ import { default as ElementController, ExecuteControllers } from 'wtc-controller
 import { default as ViewportManager, Viewport } from 'wtc-controller-viewports';
 
 class AutoplayVideo extends Viewport {
-  constructor(element, options = { fullWidth: false }) {
+  constructor(element, options) {
     super(element);
 
+    const defaults = { fullWidth: false, vpOn: 0 };
+    options = Object.assign({}, defaults, options);
+
+    this.hasStarted = false;
     this.initiated = false;
     this.options = {
-      fullWidth: this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth
+      fullWidth: this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth,
+      vpOn: this.element.hasAttribute('data-vp-on') ? parseInt(this.element.getAttribute('data-vp-on')) : options.vpOn
+    }
+
+    if (this.options.fullWidth && !this.element.classList.contains('autoplay-video--fullscreen')) {
+      this.element.classList.add('autoplay-video--fullscreen');
     }
 
     this._video = this.element.querySelector('.autoplay-video__video');
@@ -46,7 +55,9 @@ class AutoplayVideo extends Viewport {
         window.addEventListener('resize', resizeDebounce);
       }
 
-      this.playVideo();
+      if (this._video.hasAttribute('autoplay')) {
+        this.playVideo();
+      }
     }
   }
 
@@ -72,6 +83,7 @@ class AutoplayVideo extends Viewport {
 
   onPlay() {
     this.element.classList.add('is-playing');
+    this.hasStarted = true;
   }
 
   onFrozen() {
@@ -80,6 +92,7 @@ class AutoplayVideo extends Viewport {
 
   onPause() {
     this.element.classList.add('is-paused');
+    this.hasStarted = false;
   }
 
   pauseVideo() {
@@ -113,6 +126,12 @@ class AutoplayVideo extends Viewport {
     }
     else {
       setTimeout(this.playVideo.bind(this), 500);
+    }
+  }
+
+  runAnimation(topPercent) {
+    if (topPercent > this.options.vpOn && this.initiated) {
+      if (!this.hasStarted) this.playVideo();
     }
   }
 
