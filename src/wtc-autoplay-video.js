@@ -30,7 +30,15 @@ class AutoplayVideo extends Viewport {
       this.init();
     }
     else {
-      this._video.addEventListener('canplay', this.init.bind(this), false);
+      if (navigator && navigator.connection) {
+        if (navigator.connection.saveData) {
+          this.onFrozen.bind(this);
+        } else {
+          this._video.addEventListener('canplay', this.init.bind(this), false);
+        }
+      } else {
+        this._video.addEventListener('canplay', this.init.bind(this), false);
+      }
     }
 
     this._video.addEventListener('error', this.onFrozen.bind(this), true);

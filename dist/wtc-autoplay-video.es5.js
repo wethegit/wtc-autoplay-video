@@ -349,7 +349,15 @@ var AutoplayVideo = function (_Viewport) {
     if (_this._video.readyState >= 2) {
       _this.init();
     } else {
-      _this._video.addEventListener('canplay', _this.init.bind(_this), false);
+      if (navigator && navigator.connection) {
+        if (navigator.connection.saveData) {
+          _this.onFrozen.bind(_this);
+        } else {
+          _this._video.addEventListener('canplay', _this.init.bind(_this), false);
+        }
+      } else {
+        _this._video.addEventListener('canplay', _this.init.bind(_this), false);
+      }
     }
 
     _this._video.addEventListener('error', _this.onFrozen.bind(_this), true);
