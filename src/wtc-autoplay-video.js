@@ -26,19 +26,19 @@ class AutoplayVideo extends Viewport {
     this._video.setAttribute('playsinline', '');
     this._video.setAttribute('muted', '');
 
-    if (this._video.readyState >= 2) {
+    if (navigator && navigator.connection) {
+      if (navigator.connection.saveData) {
+        this.onFrozen(this);
+      }
+      else {
+        this._video.addEventListener('canplay', this.init.bind(this), false);
+      }
+    }
+    else if (this._video.readyState >= 2) {
       this.init();
     }
     else {
-      if (navigator && navigator.connection) {
-        if (navigator.connection.saveData) {
-          this.onFrozen.bind(this);
-        } else {
-          this._video.addEventListener('canplay', this.init.bind(this), false);
-        }
-      } else {
-        this._video.addEventListener('canplay', this.init.bind(this), false);
-      }
+      this._video.addEventListener('canplay', this.init.bind(this), false);
     }
 
     this._video.addEventListener('error', this.onFrozen.bind(this), true);
