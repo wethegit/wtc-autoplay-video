@@ -347,19 +347,14 @@ var AutoplayVideo = function (_Viewport) {
     _this._video.setAttribute('muted', '');
 
     if (navigator && navigator.connection) {
-      console.log(1);
       if (navigator.connection.saveData) {
-        console.log(2);
         _this.onFrozen(_this);
       } else {
-        console.log(3);
         _this._video.addEventListener('canplay', _this.init.bind(_this), false);
       }
     } else if (_this._video.readyState >= 2) {
-      console.log(4);
       _this.init();
     } else {
-      console.log(5);
       _this._video.addEventListener('canplay', _this.init.bind(_this), false);
     }
 
@@ -424,7 +419,6 @@ var AutoplayVideo = function (_Viewport) {
   }, {
     key: 'onFrozen',
     value: function onFrozen() {
-      console.log(3, 'frozen');
       this.element.classList.add('is-frozen');
     }
   }, {
