@@ -350,7 +350,11 @@ var AutoplayVideo = function (_Viewport) {
       if (navigator.connection.saveData) {
         _this.onFrozen(_this);
       } else {
-        _this._video.addEventListener('canplay', _this.init.bind(_this), false);
+        if (_this._video.readyState >= 2) {
+          _this.init();
+        } else {
+          _this._video.addEventListener('canplay', _this.init.bind(_this), false);
+        }
       }
     } else if (_this._video.readyState >= 2) {
       _this.init();
