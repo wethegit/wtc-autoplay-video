@@ -1,5 +1,6 @@
+
 import { default as ElementController, ExecuteControllers } from 'wtc-controller-element';
-import { default as ViewportManager, Viewport } from 'wtc-controller-viewports';
+import Viewport from './Viewport';
 
 class AutoplayVideo extends Viewport {
   constructor(element, options) {
@@ -42,10 +43,12 @@ class AutoplayVideo extends Viewport {
       this.init();
     }
     else {
-      this._video.addEventListener('canplay', this.init.bind(this), false);
+      // this._video.addEventListener('canplay', this.init.bind(this), false);
+      this.init();
     }
 
     this._video.addEventListener('error', this.onFrozen.bind(this), true);
+    this.animationCallback = this.viewportAnimationCallback.bind(this);
   }
 
   init() {
@@ -67,7 +70,7 @@ class AutoplayVideo extends Viewport {
         window.addEventListener('resize', resizeDebounce);
       }
 
-      if (this._video.hasAttribute('autoplay')) {
+      if (this.isOnScreen) {
         this.playVideo();
       }
     }
@@ -141,11 +144,18 @@ class AutoplayVideo extends Viewport {
     }
   }
 
-  runAnimation(topPercent) {
-    if (topPercent > this.options.vpOn && this.initiated) {
-      if (!this.hasStarted) this.playVideo();
+  viewportAnimationCallback(topPercent) {
+    if (!this.isOnScreen && this.hasStarted && !this._video.paused) {
+      this._video.pause();
+    } else {
+      if (topPercent > this.options.vpOn && this.initiated) {
+        if (!this.hasStarted && this._video.paused) {
+          this._video.play();
+        }
+      }
     }
   }
+
 
   get video() {
     return this._video;
