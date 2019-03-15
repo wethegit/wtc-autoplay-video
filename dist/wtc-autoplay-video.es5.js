@@ -81,9 +81,9 @@ var _wtcControllerElement = __webpack_require__(1);
 
 var _wtcControllerElement2 = _interopRequireDefault(_wtcControllerElement);
 
-var _Viewport2 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./Viewport\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+var _wtcViewport = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"wtc-viewport\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
-var _Viewport3 = _interopRequireDefault(_Viewport2);
+var _wtcViewport2 = _interopRequireDefault(_wtcViewport);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -261,7 +261,7 @@ var AutoplayVideo = function (_Viewport) {
   }]);
 
   return AutoplayVideo;
-}(_Viewport3.default);
+}(_wtcViewport2.default);
 
 _wtcControllerElement.ExecuteControllers.registerController(AutoplayVideo, 'AutoplayVideo');
 
