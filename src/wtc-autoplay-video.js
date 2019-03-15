@@ -1,6 +1,6 @@
 
 import { default as ElementController, ExecuteControllers } from 'wtc-controller-element';
-import Viewport from './Viewport';
+import Viewport from 'wtc-viewport';
 
 class AutoplayVideo extends Viewport {
   constructor(element, options) {
