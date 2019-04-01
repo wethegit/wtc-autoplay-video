@@ -15,10 +15,11 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: "babel-loader",
         options: {
-          presets: [["env", {
+          presets: [["@babel/env", {
             "targets": {
               "browsers": ["last 2 versions", "ie >= 11"]
-            }
+            },
+            useBuiltIns: "usage"
           }]]
         }
       }

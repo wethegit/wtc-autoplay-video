@@ -1,11 +1,11 @@
 {
   "name": "wtc-autoplay-video",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Autoplaying video class",
   "main": "dist/wtc-autoplay-video.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prebuild-js": "npx babel src/ --presets env --out-dir build",
+    "prebuild-js": "npx babel src/ --presets @babel/preset-env --out-dir build",
     "prebuild-css": "node-sass --output-style compressed src/wtc-autoplay-video.scss build/wtc-autoplay-video.css",
     "minify-js": "npx uglifyjs build/wtc-autoplay-video.js --compress --output dist/wtc-autoplay-video.min.js",
     "minify-css": "npx postcss build/wtc-autoplay-video.css --no-map --use autoprefixer -d dist/",
@@ -13,19 +13,21 @@
     "prepare": "npm run build && npx webpack --config webpack.config.js && npm run minify-js && npm run minify-css"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.0",
     "wtc-controller-element": "^1.1.0",
     "wtc-controller-viewports": "^2.0.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
     "autoprefixer": "^8.5.1",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
+    "babel-loader": "^8.0.5",
     "node-sass": "^4.9.0",
     "postcss-cli": "^5.0.0",
     "uglify-js": "^3.3.28",
-    "webpack": "^3.10.0"
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.2.1"
   },
   "repository": {
     "type": "git",
