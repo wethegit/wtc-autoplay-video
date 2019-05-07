@@ -5,6 +5,7 @@ import Viewport from './ViewportController.js';
 const defaults = {
   fullWidth: false,
   vpOn: 0,
+  startAt: null,
   loopFrom: null,
   loopTo: null
 };
@@ -22,9 +23,12 @@ class AutoplayVideo extends Viewport {
     this.options = {
       fullWidth: this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth,
       vpOn: this.element.hasAttribute('data-vp-on') ? parseInt(this.element.getAttribute('data-vp-on')) : options.vpOn,
+      startAt: this.element.hasAttribute('data-autoplay-video--start-at') ? parseFloat(this.element.getAttribute('data-autoplay-video--start-at')) : options.startAt,
       loopFrom: this.element.hasAttribute('data-autoplay-video--loop-from') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-from')) : options.loopFrom,
       loopTo: this.element.hasAttribute('data-autoplay-video--loop-to') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-to')) : options.loopTo
     }
+    
+    console.log(this.options);
 
     if (this.options.fullWidth && !this.element.classList.contains('autoplay-video--fullscreen')) {
       this.element.classList.add('autoplay-video--fullscreen');
@@ -119,6 +123,9 @@ class AutoplayVideo extends Viewport {
       this.videoPlaying = true;
       requestAnimationFrame(this.onLoopCheck);
     }
+    if(!isNaN(this.options.startAt)) {
+      this._video.currentTime = this.options.startAt;
+    }
   }
 
   onFrozen() {
@@ -179,6 +186,9 @@ class AutoplayVideo extends Viewport {
   viewportAnimationCallback(topPercent) {
     if (!this.isOnScreen && this.hasStarted && !this._video.paused) {
       this.pauseVideo();
+      if(!isNaN(this.options.startAt)) {
+        this._video.currentTime = this.options.startAt;
+      }
     } else {
       if (topPercent > this.options.vpOn && this.initiated) {
         if (!this.hasStarted && this._video.paused) {
