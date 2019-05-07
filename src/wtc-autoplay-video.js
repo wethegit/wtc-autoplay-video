@@ -87,7 +87,7 @@ const defaults = {
  * 
  * ## Options
  * 
- * Options object is comprised of the following:
+ * The options object is comprised of the following:
  * 
  * | Name | HTML Attribute | Type | Description | Default |
  * | ---- | -------------- | ---- | ----------- | ------- |
@@ -128,12 +128,19 @@ class AutoplayVideo extends Viewport {
   constructor(element, options) {
     super(element);
 
-    this.onLoopCheck = this.onLoopCheck.bind(this);
-
-    options = Object.assign({}, defaults, options);
-
+    // set up our running defaults
     this.hasStarted = false;
     this.initiated = false;
+
+    // Bind anything that will be used a sa listener
+    this.onLoopCheck = this.onLoopCheck.bind(this);
+    this.init = this.init.bind(this);
+    this.onEnded = this.onEnded.bind(this);
+    this.onFrozen = this.onFrozen.bind(this);
+    this.animationCallback = this.viewportAnimationCallback.bind(this);
+
+    // Assign the provided options and coerce and HTML element properties as well.
+    options = Object.assign({}, defaults, options);
     this.options = {
       fullWidth: this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth,
       vpOn: this.element.hasAttribute('data-vp-on') ? parseInt(this.element.getAttribute('data-vp-on')) : options.vpOn,
@@ -142,21 +149,27 @@ class AutoplayVideo extends Viewport {
       loopTo: this.element.hasAttribute('data-autoplay-video--loop-to') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-to')) : options.loopTo
     }
 
+    // If the video is set to full width, applu the class to the element.
     if (this.options.fullWidth && !this.element.classList.contains('autoplay-video--fullscreen')) {
       this.element.classList.add('autoplay-video--fullscreen');
     }
 
+    // Find the video and the fallback
     this._video = this.element.querySelector('.autoplay-video__video');
     this._fallback = this.element.querySelector('.autoplay-video__fallback');
 
+    // Set the required video properties for inline playing (thanks Chrome)
     this._video.muted = true;
     this._video.setAttribute('playsinline', '');
     this._video.setAttribute('muted', '');
     
+    // If we have a startAt property, update the video's time to that.
     if(!isNaN(this.options.startAt) && this.options.startAt != null ) {
       this._video.currentTime = this.options.startAt;
     }
 
+    // Assign the class initialisation when the video can play
+    // @TODO clean this up. we have an else if with an init followed by an else with an init
     if (navigator && navigator.connection) {
       if (navigator.connection.saveData) {
         this.onFrozen(this);
@@ -164,7 +177,7 @@ class AutoplayVideo extends Viewport {
         if (this._video.readyState >= 2) {
           this.init();
         } else {
-          this._video.addEventListener('canplay', this.init.bind(this), false);
+          this._video.addEventListener('canplay', this.init, false);
         }
       }
     } else if (this._video.readyState >= 2) {
@@ -173,17 +186,18 @@ class AutoplayVideo extends Viewport {
       this.init();
     }
     
+    // If we have a loop from property and/or a loop to property set the video into the right states and add appriopriate functionality listeners
     if(this.options.loopTo) {
       this._video.loop = false;
       if(this.options.loopFrom) {
         this.loopPeriod = true;
       } else {
-        this._video.addEventListener('ended', this.onEnded.bind(this), true);
+        this._video.addEventListener('ended', this.onEnded, true);
       }
     }
 
-    this._video.addEventListener('error', this.onFrozen.bind(this), true);
-    this.animationCallback = this.viewportAnimationCallback.bind(this);
+    // On error, set the video to frozen. This is kind of a final state fallback.
+    this._video.addEventListener('error', this.onFrozen, true);
   }
 
   /**
