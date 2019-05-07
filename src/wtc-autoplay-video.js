@@ -1,19 +1,29 @@
 
-import { default as ElementController, ExecuteControllers } from 'wtc-controller-element';
-import Viewport from 'wtc-controller-viewports';
+import { default as ElementController, ExecuteControllers } from './ElementController.js';
+import Viewport from './ViewportController.js';
+
+const defaults = {
+  fullWidth: false,
+  vpOn: 0,
+  loopFrom: null,
+  loopTo: null
+};
 
 class AutoplayVideo extends Viewport {
   constructor(element, options) {
     super(element);
 
-    const defaults = { fullWidth: false, vpOn: 0 };
+    this.onLoopCheck = this.onLoopCheck.bind(this);
+
     options = Object.assign({}, defaults, options);
 
     this.hasStarted = false;
     this.initiated = false;
     this.options = {
       fullWidth: this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth,
-      vpOn: this.element.hasAttribute('data-vp-on') ? parseInt(this.element.getAttribute('data-vp-on')) : options.vpOn
+      vpOn: this.element.hasAttribute('data-vp-on') ? parseInt(this.element.getAttribute('data-vp-on')) : options.vpOn,
+      loopFrom: this.element.hasAttribute('data-autoplay-video--loop-from') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-from')) : options.loopFrom,
+      loopTo: this.element.hasAttribute('data-autoplay-video--loop-to') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-to')) : options.loopTo
     }
 
     if (this.options.fullWidth && !this.element.classList.contains('autoplay-video--fullscreen')) {
@@ -30,21 +40,27 @@ class AutoplayVideo extends Viewport {
     if (navigator && navigator.connection) {
       if (navigator.connection.saveData) {
         this.onFrozen(this);
-      }
-      else {
+      } else {
         if (this._video.readyState >= 2) {
           this.init();
         } else {
           this._video.addEventListener('canplay', this.init.bind(this), false);
         }
       }
-    }
-    else if (this._video.readyState >= 2) {
+    } else if (this._video.readyState >= 2) {
       this.init();
-    }
-    else {
+    } else {
       // this._video.addEventListener('canplay', this.init.bind(this), false);
       this.init();
+    }
+    
+    if(this.options.loopTo) {
+      this._video.loop = false;
+      if(this.options.loopFrom) {
+        this.loopPeriod = true;
+      } else {
+        this._video.addEventListener('ended', this.onEnded.bind(this), true);
+      }
     }
 
     this._video.addEventListener('error', this.onFrozen.bind(this), true);
@@ -99,15 +115,36 @@ class AutoplayVideo extends Viewport {
   onPlay() {
     this.element.classList.add('is-playing');
     this.hasStarted = true;
+    if(this.videoPlaying !== true && this.loopPeriod === true) {
+      this.videoPlaying = true;
+      requestAnimationFrame(this.onLoopCheck);
+    }
   }
 
   onFrozen() {
     this.element.classList.add('is-frozen');
+    this.videoPlaying = false;
   }
 
   onPause() {
     this.element.classList.add('is-paused');
     this.hasStarted = false;
+    this.videoPlaying = false;
+  }
+
+  onEnded() {
+    this._video.currentTime = this.options.loopTo;
+    this._video.play();
+  }
+
+  onLoopCheck(delta) {
+    if(this.videoPlaying === true && this.loopPeriod === true) {
+      requestAnimationFrame(this.onLoopCheck);
+    }
+
+    if(this._video.currentTime >= this.options.loopFrom) {
+      this._video.currentTime = this.options.loopTo;
+    }
   }
 
   pauseVideo() {
@@ -123,34 +160,29 @@ class AutoplayVideo extends Viewport {
         try {
           if (typeof Promise !== "undefined" && Promise.toString().indexOf("[native code]") !== -1 && testPlay && testPlay instanceof Promise) {
             testPlay.then(this.onPlay.bind(this), this.onFrozen.bind(this));
-          }
-          else if (!this._video.paused) {
+          } else if (!this._video.paused) {
             this.onPlay();
-          }
-          else {
+          } else {
             this.onFrozen();
           }
-        }
-        catch (error) {
+        } catch(error) {
           this.onFrozen();
         }
-      }
-      else {
+      } else {
         this.onPlay();
       }
-    }
-    else {
+    } else {
       setTimeout(this.playVideo.bind(this), 500);
     }
   }
 
   viewportAnimationCallback(topPercent) {
     if (!this.isOnScreen && this.hasStarted && !this._video.paused) {
-      this._video.pause();
+      this.pauseVideo();
     } else {
       if (topPercent > this.options.vpOn && this.initiated) {
         if (!this.hasStarted && this._video.paused) {
-          this._video.play();
+          this.playVideo();
         }
       }
     }
