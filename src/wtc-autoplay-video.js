@@ -99,7 +99,7 @@ class AutoplayVideo extends Viewport {
    * Options object is comprised of the following:
    * 
    * | Name | Type | Description | Default |
-   * | ---- | ---- | ----------- | _______ |
+   * | ---- | ---- | ----------- | ------- |
    * | fullWidth | `Boolean`  | Whether the video should display fullscreen | false |
    * | vpOn | `Number`  | The point at which the video should start playing after havign scrolled on the screen. | 0 |
    * | startAt | `Number`  | When the video starts playing again, start at this point, in seconds. | null |
