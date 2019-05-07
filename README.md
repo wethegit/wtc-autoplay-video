@@ -82,6 +82,20 @@ And for last, instanciate the videos:
 </script>
 ```
 
+## Options
+
+Options object is comprised of the following:
+
+| Name | HTML Attribute | Type | Description | Default |
+| ---- | -------------- | ---- | ----------- | ------- |
+| fullWidth | .autoplay-video--fullscreen | `Boolean`  | Whether the video should display fullscreen | false |
+| vpOn | data-vp-on | `Number`  | The point at which the video should start playing after havign scrolled on the screen. | 0 |
+| startAt | data-autoplay-video--start-at | `Number`  | When the video starts playing again, start at this point, in seconds. | null |
+| loopFrom | data-autoplay-video--loop-from | `Number`  | When the video reaches this part, loop. If this isn't provided, the end of the video will be the loop point. | null |
+| loopTo | data-autoplay-video--loop-to | `Number`  | When the video loops, this is the point that it will start the loop from. | null |
+
+# Class Documentation
+
 
 
 
