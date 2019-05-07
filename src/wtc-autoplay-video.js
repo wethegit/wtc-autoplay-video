@@ -27,8 +27,6 @@ class AutoplayVideo extends Viewport {
       loopFrom: this.element.hasAttribute('data-autoplay-video--loop-from') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-from')) : options.loopFrom,
       loopTo: this.element.hasAttribute('data-autoplay-video--loop-to') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-to')) : options.loopTo
     }
-    
-    console.log(this.options);
 
     if (this.options.fullWidth && !this.element.classList.contains('autoplay-video--fullscreen')) {
       this.element.classList.add('autoplay-video--fullscreen');
@@ -40,6 +38,10 @@ class AutoplayVideo extends Viewport {
     this._video.muted = true;
     this._video.setAttribute('playsinline', '');
     this._video.setAttribute('muted', '');
+    
+    if(!isNaN(this.options.startAt) && this.options.startAt != null ) {
+      this._video.currentTime = this.options.startAt;
+    }
 
     if (navigator && navigator.connection) {
       if (navigator.connection.saveData) {
