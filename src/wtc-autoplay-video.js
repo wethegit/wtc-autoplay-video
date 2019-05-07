@@ -125,9 +125,6 @@ class AutoplayVideo extends Viewport {
       this.videoPlaying = true;
       requestAnimationFrame(this.onLoopCheck);
     }
-    if(!isNaN(this.options.startAt)) {
-      this._video.currentTime = this.options.startAt;
-    }
   }
 
   onFrozen() {
@@ -188,7 +185,7 @@ class AutoplayVideo extends Viewport {
   viewportAnimationCallback(topPercent) {
     if (!this.isOnScreen && this.hasStarted && !this._video.paused) {
       this.pauseVideo();
-      if(!isNaN(this.options.startAt)) {
+      if(!isNaN(this.options.startAt) && this.options.startAt != null ) {
         this._video.currentTime = this.options.startAt;
       }
     } else {
