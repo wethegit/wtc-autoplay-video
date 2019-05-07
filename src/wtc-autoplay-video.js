@@ -97,6 +97,7 @@ class AutoplayVideo extends Viewport {
    * Creates an instance of AutoplayVideo.
    * 
    * Options object is comprised of the following:
+   * 
    * | Name | Type | Description | Default |
    * | ---- | ---- | ----------- | _______ |
    * | fullWidth | `Boolean`  | Whether the video should display fullscreen | false |
