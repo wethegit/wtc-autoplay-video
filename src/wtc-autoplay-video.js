@@ -83,6 +83,7 @@ const defaults = {
  *     new WTCAutoplayVideo.default(videos[i], { fullWidth: false, vpOn: 0 });
  *   }
  * </script>
+ * ```
  * 
  * @class AutoplayVideo
  * @augments Viewport

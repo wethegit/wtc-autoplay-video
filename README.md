@@ -80,6 +80,7 @@ And for last, instanciate the videos:
     new WTCAutoplayVideo.default(videos[i], { fullWidth: false, vpOn: 0 });
   }
 </script>
+```
 
 
 
