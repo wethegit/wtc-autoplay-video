@@ -10,7 +10,8 @@
     "minify-js": "npx uglifyjs build/wtc-autoplay-video.js --compress --output dist/wtc-autoplay-video.min.js",
     "minify-css": "npx postcss build/wtc-autoplay-video.css --no-map --use autoprefixer -d dist/",
     "build": "npm run prebuild-js && npm rum prebuild-css",
-    "prepare": "npm run build && npx webpack --config webpack.config.js && npm run minify-js && npm run minify-css"
+    "prepare": "npm run build && npx webpack --config webpack.config.js && npm run minify-js && npm run minify-css",
+    "document": "doxdox src/wtc-autoplay-video.js  --layout markdown --output README.md"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
