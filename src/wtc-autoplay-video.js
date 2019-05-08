@@ -405,6 +405,7 @@ class AutoplayVideo extends Viewport {
    *
    * @type {HTMLElement}
    * @default null
+   * @returns {HTMLElement|null}
    */
   set video(value) {
     if(value instanceof HTMLElement) {
@@ -419,6 +420,7 @@ class AutoplayVideo extends Viewport {
    *
    * @type {HTMLElement}
    * @default null
+   * @returns {HTMLElement|null}
    */
   set fallback(value) {
     if(value instanceof HTMLElement) {
@@ -433,6 +435,7 @@ class AutoplayVideo extends Viewport {
    *
    * @type {boolean}
    * @default false
+   * @returns {boolean}
    */
   set hasStarted(value) {
     this._hasStarted = value === true;
@@ -445,6 +448,7 @@ class AutoplayVideo extends Viewport {
    *
    * @type {boolean}
    * @default false
+   * @returns {boolean}
    */
   set initiated(value) {
     this._initiated = value === true;
@@ -457,6 +461,7 @@ class AutoplayVideo extends Viewport {
    *
    * @type {boolean}
    * @default false
+   * @returns {boolean}
    */
   set loopPeriod(value) {
     this._loopPeriod = value === true;
@@ -470,6 +475,7 @@ class AutoplayVideo extends Viewport {
    *
    * @type {boolean}
    * @default false
+   * @returns {boolean}
    */
   set videoPlaying(value) {
     this._videoPlaying = value === true;
@@ -482,6 +488,7 @@ class AutoplayVideo extends Viewport {
    *
    * @type {number}
    * @default null
+   * @returns {number}
    */
   set ratio(value) {
     if(!isNaN(value)) this._ratio = value;
@@ -496,6 +503,7 @@ class AutoplayVideo extends Viewport {
    * @readonly
    * @type {boolean}
    * @default false
+   * @returns {boolean}
    */
   get fullWidth() {
     return this.options.fullWidth || false; 
@@ -507,6 +515,7 @@ class AutoplayVideo extends Viewport {
    * @readonly
    * @type {number}
    * @default null
+   * @returns {number}
    */
   get startAt() {
     return this.options.startAt || null;
@@ -519,6 +528,7 @@ class AutoplayVideo extends Viewport {
    * @readonly
    * @type {number}
    * @default null
+   * @returns {number}
    */
   get loopFrom() {
     return this.options.loopFrom || null;
@@ -530,6 +540,7 @@ class AutoplayVideo extends Viewport {
    * @readonly
    * @type {number}
    * @default null
+   * @returns {number}
    */
   get loopTo() {
     return this.options.loopTo || null;

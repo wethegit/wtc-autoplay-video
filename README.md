@@ -342,7 +342,7 @@ on-screen.
 ##### Returns
 
 
-- `Void`
+- `HTMLElement`  
 
 
 
@@ -358,7 +358,7 @@ on-screen.
 ##### Returns
 
 
-- `Void`
+- `HTMLElement`  
 
 
 
@@ -374,7 +374,7 @@ on-screen.
 ##### Returns
 
 
-- `Void`
+- `boolean`  
 
 
 
@@ -390,7 +390,7 @@ on-screen.
 ##### Returns
 
 
-- `Void`
+- `boolean`  
 
 
 
@@ -406,7 +406,7 @@ on-screen.
 ##### Returns
 
 
-- `Void`
+- `boolean`  
 
 
 
@@ -423,7 +423,7 @@ This is specifically for the determination of the run loop.
 ##### Returns
 
 
-- `Void`
+- `boolean`  
 
 
 
@@ -439,7 +439,7 @@ This is specifically for the determination of the run loop.
 ##### Returns
 
 
-- `Void`
+- `number`  
 
 
 
@@ -456,7 +456,7 @@ Set from the passed options.
 ##### Returns
 
 
-- `Void`
+- `boolean`  
 
 
 
@@ -473,7 +473,7 @@ Set from the passed options.
 ##### Returns
 
 
-- `Void`
+- `number`  
 
 
 
@@ -491,7 +491,7 @@ Set from the passed options.
 ##### Returns
 
 
-- `Void`
+- `number`  
 
 
 
@@ -508,7 +508,7 @@ Set from the passed options
 ##### Returns
 
 
-- `Void`
+- `number`  
 
 
 
