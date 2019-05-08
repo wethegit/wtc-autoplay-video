@@ -1,6 +1,6 @@
 
-import { default as ElementController, ExecuteControllers } from './ElementController.js';
-import Viewport from './ViewportController.js';
+import { default as ElementController, ExecuteControllers } from 'wtc-controller-element';
+import Viewport from 'wtc-controller-viewports';
 
 const defaults = {
   fullWidth: false,
