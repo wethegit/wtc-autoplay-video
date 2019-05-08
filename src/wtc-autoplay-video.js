@@ -128,10 +128,6 @@ class AutoplayVideo extends Viewport {
   constructor(element, options) {
     super(element);
 
-    // set up our running defaults
-    this.hasStarted = false;
-    this.initiated = false;
-
     // Bind anything that will be used a sa listener
     this.onLoopCheck = this.onLoopCheck.bind(this);
     this.init = this.init.bind(this);
@@ -155,17 +151,17 @@ class AutoplayVideo extends Viewport {
     }
 
     // Find the video and the fallback
-    this._video = this.element.querySelector('.autoplay-video__video');
-    this._fallback = this.element.querySelector('.autoplay-video__fallback');
+    this.video = this.element.querySelector('.autoplay-video__video');
+    this.fallback = this.element.querySelector('.autoplay-video__fallback');
 
     // Set the required video properties for inline playing (thanks Chrome)
-    this._video.muted = true;
-    this._video.setAttribute('playsinline', '');
-    this._video.setAttribute('muted', '');
+    this.video.muted = true;
+    this.video.setAttribute('playsinline', '');
+    this.video.setAttribute('muted', '');
     
     // If we have a startAt property, update the video's time to that.
-    if(!isNaN(this.options.startAt) && this.options.startAt != null ) {
-      this._video.currentTime = this.options.startAt;
+    if(!isNaN(this.startAt) && this.startAt != null ) {
+      this.video.currentTime = this.startAt;
     }
 
     // Assign the class initialisation when the video can play
@@ -174,30 +170,30 @@ class AutoplayVideo extends Viewport {
       if (navigator.connection.saveData) {
         this.onFrozen(this);
       } else {
-        if (this._video.readyState >= 2) {
+        if (this.video.readyState >= 2) {
           this.init();
         } else {
-          this._video.addEventListener('canplay', this.init, false);
+          this.video.addEventListener('canplay', this.init, false);
         }
       }
-    } else if (this._video.readyState >= 2) {
+    } else if (this.video.readyState >= 2) {
       this.init();
     } else {
       this.init();
     }
     
     // If we have a loop from property and/or a loop to property set the video into the right states and add appriopriate functionality listeners
-    if(this.options.loopTo) {
-      this._video.loop = false;
-      if(this.options.loopFrom) {
+    if(this.loopTo) {
+      this.video.loop = false;
+      if(this.loopFrom) {
         this.loopPeriod = true;
       } else {
-        this._video.addEventListener('ended', this.onEnded, true);
+        this.video.addEventListener('ended', this.onEnded, true);
       }
     }
 
     // On error, set the video to frozen. This is kind of a final state fallback.
-    this._video.addEventListener('error', this.onFrozen, true);
+    this.video.addEventListener('error', this.onFrozen, true);
   }
 
   /**
@@ -210,9 +206,9 @@ class AutoplayVideo extends Viewport {
   init() {
     if (!this.initiated) {
       this.initiated = true;
-      this.ratio = this._video.videoWidth / this._video.videoHeight;
+      this.ratio = this.video.videoWidth / this.video.videoHeight;
 
-      if (this.options.fullWidth) {
+      if (this.fullWidth) {
         let resizeTimer = null;
         const resizeDebounce = () => {
           clearTimeout(resizeTimer);
@@ -240,8 +236,8 @@ class AutoplayVideo extends Viewport {
    * @memberOf AutoplayVideo
    */
   videoResize() {
-    let targetW = this._video.parentNode.offsetWidth,
-      targetH = this._video.parentNode.offsetHeight,
+    let targetW = this.video.parentNode.offsetWidth,
+      targetH = this.video.parentNode.offsetHeight,
       targetRatio = targetW / targetH,
       newW = 0,
       newH = 0;
@@ -255,8 +251,8 @@ class AutoplayVideo extends Viewport {
       newW = newH * this.ratio;
     }
 
-    this._video.style.height = newH + "px";
-    this._video.style.width = newW + "px";
+    this.video.style.height = newH + "px";
+    this.video.style.width = newW + "px";
   }
 
   /**
@@ -311,8 +307,8 @@ class AutoplayVideo extends Viewport {
    * @memberOf AutoplayVideo
    */
   onEnded() {
-    this._video.currentTime = this.options.loopTo;
-    this._video.play();
+    this.video.currentTime = this.loopTo;
+    this.video.play();
   }
 
   /**
@@ -329,8 +325,8 @@ class AutoplayVideo extends Viewport {
       requestAnimationFrame(this.onLoopCheck);
     }
 
-    if(this._video.currentTime >= this.options.loopFrom) {
-      this._video.currentTime = this.options.loopTo;
+    if(this.video.currentTime >= this.loopFrom) {
+      this.video.currentTime = this.loopTo;
     }
   }
 
@@ -341,7 +337,7 @@ class AutoplayVideo extends Viewport {
    * @memberOf AutoplayVideo
    */
   pauseVideo() {
-    this._video.pause();
+    this.video.pause();
     this.onPause();
   }
 
@@ -352,14 +348,14 @@ class AutoplayVideo extends Viewport {
    * @memberOf AutoplayVideo
    */
   playVideo() {
-    if (this._video.readyState >= 2) {
-      if (this._video.paused) {
-        let testPlay = this._video.play();
+    if (this.video.readyState >= 2) {
+      if (this.video.paused) {
+        let testPlay = this.video.play();
 
         try {
           if (typeof Promise !== "undefined" && Promise.toString().indexOf("[native code]") !== -1 && testPlay && testPlay instanceof Promise) {
             testPlay.then(this.onPlay.bind(this), this.onFrozen.bind(this));
-          } else if (!this._video.paused) {
+          } else if (!this.video.paused) {
             this.onPlay();
           } else {
             this.onFrozen();
@@ -386,23 +382,157 @@ class AutoplayVideo extends Viewport {
    * @memberOf AutoplayVideo
    */
   viewportAnimationCallback(topPercent) {
-    if (!this.isOnScreen && this.hasStarted && !this._video.paused) {
+    if (!this.isOnScreen && this.hasStarted && !this.video.paused) {
       this.pauseVideo();
-      if(!isNaN(this.options.startAt) && this.options.startAt != null ) {
-        this._video.currentTime = this.options.startAt;
+      if(!isNaN(this.startAt) && this.startAt != null ) {
+        this.video.currentTime = this.startAt;
       }
     } else {
       if (topPercent > this.options.vpOn && this.initiated) {
-        if (!this.hasStarted && this._video.paused) {
+        if (!this.hasStarted && this.video.paused) {
           this.playVideo();
         }
       }
     }
   }
 
+  /**
+   * Getters and setters
+   */
 
+  /**
+   * (getter/setter) The video element itself
+   *
+   * @type {HTMLElement}
+   * @default null
+   */
+  set video(value) {
+    if(value instanceof HTMLElement) {
+      this._video = value;
+    }
+  }
   get video() {
-    return this._video;
+    return this._video || null;
+  }
+  /**
+   * (getter/setter) The fallback element
+   *
+   * @type {HTMLElement}
+   * @default null
+   */
+  set fallback(value) {
+    if(value instanceof HTMLElement) {
+      this._fallback = value;
+    }
+  }
+  get fallback() {
+    return this._fallback || null;
+  }
+  /**
+   * (getter/setter) Whether the video has started playing
+   *
+   * @type {boolean}
+   * @default false
+   */
+  set hasStarted(value) {
+    this._hasStarted = value === true;
+  }
+  get hasStarted() {
+    return this._hasStarted || false;
+  }
+  /**
+   * (getter/setter) Whether the instance has been initiated
+   *
+   * @type {boolean}
+   * @default false
+   */
+  set initiated(value) {
+    this._initiated = value === true;
+  }
+  get initiated() {
+    return this._initiated || false;
+  }
+  /**
+   * (getter/setter) Whether the instance is operating over a loop period
+   *
+   * @type {boolean}
+   * @default false
+   */
+  set loopPeriod(value) {
+    this._loopPeriod = value === true;
+  }
+  get loopPeriod() {
+    return this._loopPeriod || false;
+  }
+  /**
+   * (getter/setter) Whether the video has started playing.
+   * This is specifically for the determination of the run loop.
+   *
+   * @type {boolean}
+   * @default false
+   */
+  set videoPlaying(value) {
+    this._videoPlaying = value === true;
+  }
+  get videoPlaying() {
+    return this._videoPlaying || false;
+  }
+  /**
+   * (getter/setter) The video's aspect ratio.
+   *
+   * @type {number}
+   * @default null
+   */
+  set ratio(value) {
+    if(!isNaN(value)) this._ratio = value;
+  }
+  get ratio() {
+    return this._ratio || null;
+  }
+  /**
+   * (getter) Whether the video should be full screen width.
+   * Set from the passed options.
+   *
+   * @readonly
+   * @type {boolean}
+   * @default false
+   */
+  get fullWidth() {
+    return this.options.fullWidth || false; 
+  }
+  /**
+   * (getter) The place in the video to start at, in seconds.
+   * Set from the passed options.
+   *
+   * @readonly
+   * @type {number}
+   * @default null
+   */
+  get startAt() {
+    return this.options.startAt || null;
+  }
+  /**
+   * (getter) The place in the video to loop from, in second.
+   * This should be greater than loopTo (not sure what happens if not ^_^ ).
+   * Set from the passed options.
+   *
+   * @readonly
+   * @type {number}
+   * @default null
+   */
+  get loopFrom() {
+    return this.options.loopFrom || null;
+  }
+  /**
+   * (getter) The place in the video to loop, in seconds.
+   * Set from the passed options
+   *
+   * @readonly
+   * @type {number}
+   * @default null
+   */
+  get loopTo() {
+    return this.options.loopTo || null;
   }
 }
 

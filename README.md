@@ -84,7 +84,7 @@ And for last, instanciate the videos:
 
 ## Options
 
-Options object is comprised of the following:
+The options object is comprised of the following:
 
 | Name | HTML Attribute | Type | Description | Default |
 | ---- | -------------- | ---- | ----------- | ------- |
@@ -319,6 +319,188 @@ on-screen.
 | Name | Type | Description |  |
 | ---- | ---- | ----------- | -------- |
 | topPercent | `any`  |  | &nbsp; |
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### video() 
+
+(getter/setter) The video element itself
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### fallback() 
+
+(getter/setter) The fallback element
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### hasStarted() 
+
+(getter/setter) Whether the video has started playing
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### initiated() 
+
+(getter/setter) Whether the instance has been initiated
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### loopPeriod() 
+
+(getter/setter) Whether the instance is operating over a loop period
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### videoPlaying() 
+
+(getter/setter) Whether the video has started playing.
+This is specifically for the determination of the run loop.
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### ratio() 
+
+(getter/setter) The video's aspect ratio.
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### fullWidth() 
+
+(getter) Whether the video should be full screen width.
+Set from the passed options.
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### startAt() 
+
+(getter) The place in the video to start at, in seconds.
+Set from the passed options.
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### loopFrom() 
+
+(getter) The place in the video to loop from, in second.
+This should be greater than loopTo (not sure what happens if not ^_^ ).
+Set from the passed options.
+
+
+
+
+
+
+##### Returns
+
+
+- `Void`
+
+
+
+#### loopTo() 
+
+(getter) The place in the video to loop, in seconds.
+Set from the passed options
+
+
 
 
 
