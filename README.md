@@ -62,7 +62,6 @@ ExecuteControllers.instanciate(document.getElementById('autoplay-video'), Autopl
 With the default js version, you have the option to pass the options as an object, or use data-attributes, they both work.
 ```javascript
 let gallery = new AutoplayVideo(document.getElementById('autoplay-video'), {
-  fullWidth: false,
   vpOn: 30
 });
 ```
@@ -77,7 +76,7 @@ And for last, instanciate the videos:
 <script>
   var videos = document.querySelectorAll('.autoplay-video');
   for (var i = 0; i < videos.length; i++) {
-    new WTCAutoplayVideo.default(videos[i], { fullWidth: false, vpOn: 0 });
+    new WTCAutoplayVideo.default(videos[i], { vpOn: 0 });
   }
 </script>
 ```
@@ -88,7 +87,6 @@ The options object is comprised of the following:
 
 | Name | HTML Attribute | Type | Description | Default |
 | ---- | -------------- | ---- | ----------- | ------- |
-| fullWidth | .autoplay-video--fullscreen | `Boolean`  | Whether the video should display fullscreen | false |
 | vpOn | data-vp-on | `Number`  | The point at which the video should start playing after havign scrolled on the screen. | 0 |
 | startAt | data-autoplay-video--start-at | `Number`  | When the video starts playing again, start at this point, in seconds. | null |
 | loopFrom | data-autoplay-video--loop-from | `Number`  | When the video reaches this part, loop. If this isn't provided, the end of the video will be the loop point. | null |
@@ -116,7 +114,6 @@ Options object is comprised of the following:
 
 | Name | Type | Description | Default |
 | ---- | ---- | ----------- | ------- |
-| fullWidth | `Boolean`  | Whether the video should display fullscreen | false |
 | vpOn | `Number`  | The point at which the video should start playing after havign scrolled on the screen. | 0 |
 | startAt | `Number`  | When the video starts playing again, start at this point, in seconds. | null |
 | loopFrom | `Number`  | When the video reaches this part, loop. If this isn't provided, the end of the video will be the loop point. | null |
@@ -440,23 +437,6 @@ This is specifically for the determination of the run loop.
 
 
 - `number`  
-
-
-
-#### fullWidth() 
-
-(getter) Whether the video should be full screen width.
-Set from the passed options.
-
-
-
-
-
-
-##### Returns
-
-
-- `boolean`  
 
 
 
