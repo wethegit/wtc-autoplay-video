@@ -1,6 +1,6 @@
 {
   "name": "wtc-autoplay-video",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Autoplaying video class",
   "main": "dist/wtc-autoplay-video.min.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "minify-js": "npx uglifyjs build/wtc-autoplay-video.js --compress --output dist/wtc-autoplay-video.min.js",
     "minify-css": "npx postcss build/wtc-autoplay-video.css --no-map --use autoprefixer -d dist/",
     "build": "npm run prebuild-js && npm rum prebuild-css",
-    "prepare": "npm run build && npx webpack --config webpack.config.js && npm run minify-js && npm run minify-css"
+    "prepare": "npm run build && npx webpack --config webpack.config.js && npm run minify-js && npm run minify-css",
+    "document": "./node_modules/doxdox/bin/doxdox src/wtc-autoplay-video.js  --layout markdown --output README.md"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
@@ -23,6 +24,7 @@
     "@babel/preset-env": "^7.2.3",
     "autoprefixer": "^8.5.1",
     "babel-loader": "^8.0.5",
+    "doxdox": "^3.0.0",
     "node-sass": "^4.9.0",
     "postcss-cli": "^5.0.0",
     "uglify-js": "^3.3.28",
