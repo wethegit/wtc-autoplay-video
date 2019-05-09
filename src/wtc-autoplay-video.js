@@ -3,7 +3,6 @@ import { default as ElementController, ExecuteControllers } from 'wtc-controller
 import Viewport from 'wtc-controller-viewports';
 
 const defaults = {
-  fullWidth: false,
   vpOn: 0,
   startAt: null,
   loopFrom: null,
@@ -65,7 +64,6 @@ const defaults = {
  * With the default js version, you have the option to pass the options as an object, or use data-attributes, they both work.
  * ```javascript
  * let gallery = new AutoplayVideo(document.getElementById('autoplay-video'), {
- *   fullWidth: false,
  *   vpOn: 30
  * });
  * ```
@@ -80,7 +78,7 @@ const defaults = {
  * <script>
  *   var videos = document.querySelectorAll('.autoplay-video');
  *   for (var i = 0; i < videos.length; i++) {
- *     new WTCAutoplayVideo.default(videos[i], { fullWidth: false, vpOn: 0 });
+ *     new WTCAutoplayVideo.default(videos[i], { vpOn: 0 });
  *   }
  * </script>
  * ```
@@ -91,7 +89,6 @@ const defaults = {
  * 
  * | Name | HTML Attribute | Type | Description | Default |
  * | ---- | -------------- | ---- | ----------- | ------- |
- * | fullWidth | .autoplay-video--fullscreen | `Boolean`  | Whether the video should display fullscreen | false |
  * | vpOn | data-vp-on | `Number`  | The point at which the video should start playing after havign scrolled on the screen. | 0 |
  * | startAt | data-autoplay-video--start-at | `Number`  | When the video starts playing again, start at this point, in seconds. | null |
  * | loopFrom | data-autoplay-video--loop-from | `Number`  | When the video reaches this part, loop. If this isn't provided, the end of the video will be the loop point. | null |
@@ -114,7 +111,6 @@ class AutoplayVideo extends Viewport {
    * 
    * | Name | Type | Description | Default |
    * | ---- | ---- | ----------- | ------- |
-   * | fullWidth | `Boolean`  | Whether the video should display fullscreen | false |
    * | vpOn | `Number`  | The point at which the video should start playing after havign scrolled on the screen. | 0 |
    * | startAt | `Number`  | When the video starts playing again, start at this point, in seconds. | null |
    * | loopFrom | `Number`  | When the video reaches this part, loop. If this isn't provided, the end of the video will be the loop point. | null |
@@ -138,16 +134,10 @@ class AutoplayVideo extends Viewport {
     // Assign the provided options and coerce and HTML element properties as well.
     options = Object.assign({}, defaults, options);
     this.options = {
-      fullWidth: this.element.classList.contains('autoplay-video--fullscreen') || options.fullWidth,
       vpOn: this.element.hasAttribute('data-vp-on') ? parseInt(this.element.getAttribute('data-vp-on')) : options.vpOn,
       startAt: this.element.hasAttribute('data-autoplay-video--start-at') ? parseFloat(this.element.getAttribute('data-autoplay-video--start-at')) : options.startAt,
       loopFrom: this.element.hasAttribute('data-autoplay-video--loop-from') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-from')) : options.loopFrom,
       loopTo: this.element.hasAttribute('data-autoplay-video--loop-to') ? parseFloat(this.element.getAttribute('data-autoplay-video--loop-to')) : options.loopTo
-    }
-
-    // If the video is set to full width, applu the class to the element.
-    if (this.options.fullWidth && !this.element.classList.contains('autoplay-video--fullscreen')) {
-      this.element.classList.add('autoplay-video--fullscreen');
     }
 
     // Find the video and the fallback
@@ -207,20 +197,6 @@ class AutoplayVideo extends Viewport {
     if (!this.initiated) {
       this.initiated = true;
       this.ratio = this.video.videoWidth / this.video.videoHeight;
-
-      if (this.fullWidth) {
-        let resizeTimer = null;
-        const resizeDebounce = () => {
-          clearTimeout(resizeTimer);
-
-          resizeTimer = setTimeout(() => {
-            this.videoResize();
-          }, 300);
-        }
-
-        resizeDebounce();
-        window.addEventListener('resize', resizeDebounce);
-      }
 
       if (this.isOnScreen) {
         this.playVideo();
@@ -495,18 +471,6 @@ class AutoplayVideo extends Viewport {
   }
   get ratio() {
     return this._ratio || null;
-  }
-  /**
-   * (getter) Whether the video should be full screen width.
-   * Set from the passed options.
-   *
-   * @readonly
-   * @type {boolean}
-   * @default false
-   * @returns {boolean}
-   */
-  get fullWidth() {
-    return this.options.fullWidth || false; 
   }
   /**
    * (getter) The place in the video to start at, in seconds.
