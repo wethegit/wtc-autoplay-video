@@ -1,6 +1,6 @@
 {
   "name": "wtc-autoplay-video",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Autoplaying video class",
   "main": "dist/wtc-autoplay-video.min.js",
   "scripts": {
