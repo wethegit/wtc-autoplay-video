@@ -1,4 +1,4 @@
-# [wtc-autoplay-video](https://github.com/wethegit/wtc-autoplay-video#readme) *2.0.1*
+# [wtc-autoplay-video](https://github.com/wethegit/wtc-autoplay-video#readme) *2.0.4*
 
 > Autoplaying video class
 
