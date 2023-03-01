@@ -25,7 +25,7 @@
     "@babel/preset-env": "^7.2.3",
     "autoprefixer": "^8.5.1",
     "babel-loader": "^8.0.5",
-    "doxdox": "^3.0.0",
+    "doxdox": "^4.0.0-preview.19",
     "node-sass": "^7.0.0",
     "postcss-cli": "^6.1.2",
     "uglify-js": "^3.3.28",
